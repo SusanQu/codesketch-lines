@@ -1,0 +1,12 @@
+{
+    "libs": {
+        "options": {
+            "destPrefix": "app/js/vendor",
+            "clean": true
+        },
+        "files": {
+            "three.min.js": "threejs/build/three.min.js",
+            "THREE.MeshLine.js": "THREE.MeshLine/src/THREE.MeshLine.js"
+        }
+    }
+}
