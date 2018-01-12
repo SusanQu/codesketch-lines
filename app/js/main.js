@@ -3,7 +3,7 @@
 var scene, camera, renderer, controls;
 var graph, geometry, material, mesh, line;
 
-var colors = [0x50514f];
+var colors = [0x50514f, 0xf0b67f, 0xf25f5c, 0x70c1b3];
 
 init();
 animate();
@@ -37,14 +37,14 @@ function init() {
 
 }
 
-function makeLine (geo){
+function makeLine (geo, color){
 
     line = new MeshLine();
     line.setGeometry( geo );
 
     material = new MeshLineMaterial({
-      color: new THREE.Color( colors[0] ),
-      lineWidth: 5
+      color: new THREE.Color( colors[ color ] ),
+      lineWidth: 1
     });
 
     mesh = new THREE.Mesh( line.geometry, material );
@@ -55,10 +55,94 @@ function createLines(){
     var line = new Float32Array( 600 );
     for( var j = 0; j < 200 * 3; j += 3 ) {
       line[ j ] = -30 + 0.1 * j;
+      line[ j + 1 ] = 5 * Math.sin( 0.01 *  j );
+      line[ j + 2 ] = -40;
+    }
+    makeLine( line, 0 );
+
+    var line = new Float32Array( 600 );
+    for( var j = 0; j < 200 * 3; j += 3 ) {
+      line[ j ] = -30 + 0.1 * j;
       //line[ j + 1 ] = 5 * Math.sin( 0.01 *  j );
       line[ j + 2 ] = -20;
     }
-    makeLine( line );
+    makeLine( line, 1);
+
+    var line = new Float32Array( 600 );
+    for( var j = 0; j < 200 * 3; j += 3 ) {
+      line[ j ] = -30 + 0.1 * j;
+      //line[ j + 1 ] = 5 * Math.sin( 0.01 *  j );
+      line[ j + 2 ] = -60;
+    }
+    makeLine( line, 2);
+
+
+    var line = new THREE.Geometry();
+    line.vertices.push( new THREE.Vector3( -30, -30, -30 ) );
+  	line.vertices.push( new THREE.Vector3( -30, 30, -30 ) );
+    makeLine( line, 0);
+
+    //random line
+		var randomLine = new THREE.Geometry();
+
+		var point = new THREE.Vector3();
+		var direction = new THREE.Vector3();
+		for ( var i = 0; i < 50; i ++ ) {
+			direction.x += Math.random() - 0.5;
+			direction.y += Math.random() - 0.5;
+			direction.z += Math.random() - 0.5;
+			direction.normalize().multiplyScalar( 10 );
+			point.add( direction );
+			randomLine.vertices.push( point.clone() );
+		}
+    makeLine(randomLine, 2)
+
+
+    // Three.Vector(x, y, z)
+    //left back
+    var line = new THREE.Geometry();
+    line.vertices.push( new THREE.Vector3( 0, 20, 0 ) );
+    line.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
+    makeLine( line, 3);
+
+    //right back
+    var line = new THREE.Geometry();
+    line.vertices.push( new THREE.Vector3( 20, 0, 0 ) );
+    line.vertices.push( new THREE.Vector3( 20, 20, 0 ) );
+    makeLine( line, 3);
+
+    //back top
+    var line = new THREE.Geometry();
+    line.vertices.push( new THREE.Vector3( 0, 20, 0 ) );
+    line.vertices.push( new THREE.Vector3( 20, 20, 0 ) );
+    makeLine( line, 3);
+
+    var line = new THREE.Geometry();
+    line.vertices.push( new THREE.Vector3( 20, 0, 0 ) );
+    line.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
+    makeLine( line, 3);
+
+    var line = new THREE.Geometry();
+    line.vertices.push( new THREE.Vector3( 0, 0, 20 ) );
+    line.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
+    makeLine( line, 3);
+
+    var line = new THREE.Geometry();
+    line.vertices.push( new THREE.Vector3( 0, 0, 20 ) );
+    line.vertices.push( new THREE.Vector3( 0, -20, 20 ) );
+    makeLine( line, 3);
+
+    var line = new THREE.Geometry();
+    line.vertices.push( new THREE.Vector3( 20, 0, 0 ) );
+    line.vertices.push( new THREE.Vector3( 20, 0, 20 ) );
+    makeLine( line, 3);
+
+    //right front leg
+    var line = new THREE.Geometry();
+    line.vertices.push( new THREE.Vector3( 20, 0, 20 ) );
+    //right front bottom
+    line.vertices.push( new THREE.Vector3( 20, -20, 20 ) );
+    makeLine( line, 3);
 }
 
 function onWindowResize() {

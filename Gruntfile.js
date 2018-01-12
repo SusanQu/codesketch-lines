@@ -81,5 +81,6 @@ module.exports = function(grunt) {
         ]);
     });
 
-    grunt.registerTask('default', ['jsonlint', 'jshint', 'serve']);
+    //grunt.registerTask('default', ['jsonlint', 'jshint', 'serve']);
+    grunt.registerTask('default', ['jsonlint', 'serve']);
 };
