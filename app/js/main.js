@@ -1,10 +1,12 @@
 (function() {
 
-var scene, camera, renderer, controls, aspect;
+var scene, camera, renderer, controls, aspect, clock;
 var graph, geometry, material, mesh, line;
 
 var colors = [0x50514f, 0xf0b67f, 0xf25f5c, 0x70c1b3];
-//var frustumSize = 1000;
+var frustumSize = 1000;
+
+
 
 init();
 animate();
@@ -15,11 +17,11 @@ function init() {
     scene.background = new THREE.Color( 0xf0f0f0 );
 
     aspect = window.innerWidth / window.innerHeight;
-    camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
+    //camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
     //camera = new THREE.OrthographicCamera( frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 1, 2000 );
-
-    camera.position.z = 100;
-    //camera.position.set( 50, 10, 0 );
+    camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 1, 100 );
+    //camera.position.z = 100;
+    camera.position.set( 50, 10, 0 );
 
 
     graph = new THREE.Object3D();
@@ -35,11 +37,14 @@ function init() {
 
     renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
+    controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+    clock = new THREE.Clock();
 
     document.body.appendChild( renderer.domElement );
     window.addEventListener( 'resize', onWindowResize, false );
 
-    controls = new THREE.OrbitControls( camera, renderer.domElement );
+
 
 }
 
@@ -50,7 +55,7 @@ function makeLine (geo, color, opacity){
 
     material = new MeshLineMaterial({
       color: new THREE.Color( colors[ color ] ),
-      lineWidth: 0.25,
+      lineWidth: 0.01,
       opacity: opacity,
       transparent: true
     });
@@ -111,53 +116,60 @@ function createLines(){
 
     // Three.Vector(x, y, z)
     //left back
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 0, 20, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
-    // makeLine( line, 3);
-    //
-    // //right back
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 20, 0, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 20, 20, 0 ) );
-    // makeLine( line, 3);
-    //
-    // //back top
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 0, 20, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 20, 20, 0 ) );
-    // makeLine( line, 3);
-    //
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 20, 0, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
-    // makeLine( line, 3);
-    //
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 0, 0, 20 ) );
-    // line.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
-    // makeLine( line, 3);
-    //
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 0, 0, 20 ) );
-    // line.vertices.push( new THREE.Vector3( 0, -20, 20 ) );
-    // makeLine( line, 3);
-    //
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 20, 0, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 20, 0, 20 ) );
-    // makeLine( line, 3);
-    //
-    // //right front leg
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 20, 0, 20 ) );
-    // //right front bottom
-    // line.vertices.push( new THREE.Vector3( 20, -20, 20 ) );
-    // makeLine( line, 3);
+    var line = new THREE.Geometry();
+    line.vertices.push( new THREE.Vector3( 0, 20, 0 ) );
+    line.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
+    makeLine( line, 3);
+
+    //right back
+    var line = new THREE.Geometry();
+    line.vertices.push( new THREE.Vector3( 20, 0, 0 ) );
+    line.vertices.push( new THREE.Vector3( 20, 20, 0 ) );
+    makeLine( line, 3);
+
+    //back top
+    var line = new THREE.Geometry();
+    line.vertices.push( new THREE.Vector3( 0, 20, 0 ) );
+    line.vertices.push( new THREE.Vector3( 20, 20, 0 ) );
+    makeLine( line, 3);
+
+    var line = new THREE.Geometry();
+    line.vertices.push( new THREE.Vector3( 20, 0, 0 ) );
+    line.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
+    makeLine( line, 3);
+
+    var line = new THREE.Geometry();
+    line.vertices.push( new THREE.Vector3( 0, 0, 20 ) );
+    line.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
+    makeLine( line, 3);
+
+    var line = new THREE.Geometry();
+    line.vertices.push( new THREE.Vector3( 0, 0, 20 ) );
+    line.vertices.push( new THREE.Vector3( 0, -20, 20 ) );
+    makeLine( line, 3);
+
+    var line = new THREE.Geometry();
+    line.vertices.push( new THREE.Vector3( 20, 0, 0 ) );
+    line.vertices.push( new THREE.Vector3( 20, 0, 20 ) );
+    makeLine( line, 3);
+
+    //right front leg
+    var line = new THREE.Geometry();
+    line.vertices.push( new THREE.Vector3( 20, 0, 20 ) );
+    //right front bottom
+    line.vertices.push( new THREE.Vector3( 20, -20, 20 ) );
+    makeLine( line, 3);
 }
 
 function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
+  var aspect = window.innerWidth / window.innerHeight;
+
+  camera.left   = - frustumSize * aspect / 2;
+  camera.right  =   frustumSize * aspect / 2;
+  camera.top    =   frustumSize / 2;
+  camera.bottom = - frustumSize / 2;
+
+  //camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize( window.innerWidth, window.innerHeight );
 }
@@ -166,6 +178,10 @@ function onWindowResize() {
 function animate() {
 
     requestAnimationFrame( animate );
+
+    controls.update();
+
+    graph.rotation.y += .25 * clock.getDelta();
 
     //mesh.rotation.x += 0.01;
     //mesh.rotation.y += 0.01;
