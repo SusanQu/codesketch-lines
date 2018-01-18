@@ -30,7 +30,7 @@ function init() {
     graph = new THREE.Object3D();
     scene.add(graph);
 
-    //createLines();
+    // createLines();
 
     for(var i=0; i<150; i++){
       createRandomLines();
@@ -229,7 +229,7 @@ function animate() {
 
     controls.update();
 
-    graph.rotation.y += 0.15 * clock.getDelta();
+    graph.rotation.y += 0.1 * clock.getDelta();
 
     renderer.render( scene, camera );
 
