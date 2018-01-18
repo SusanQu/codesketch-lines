@@ -13,7 +13,7 @@ module.exports = function(grunt) {
     require('time-grunt')(grunt);
 
     // Configure the app path
-    var base = 'app';
+    var base = 'docs';
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
