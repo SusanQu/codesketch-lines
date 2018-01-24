@@ -1,7 +1,7 @@
 {
     "libs": {
         "options": {
-            "destPrefix": "app/js/vendor",
+            "destPrefix": "docs/js/vendor",
             "clean": true
         },
         "files": {

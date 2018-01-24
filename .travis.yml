@@ -1,0 +1,7 @@
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: 641223550c678f0d7ec6dff3ab197ada31aa7d07  # Set in travis-ci.org dashboard, marked secure
+  keep-history: true
+  on:
+    branch: master
