@@ -36,7 +36,7 @@ function init() {
 
     // createLines();
 
-    for(var i=0; i<300; i++){
+    for(var i=0; i<200; i++){
       createRandomLines();
     }
 
@@ -84,7 +84,7 @@ function createRandomLines(){
 
   var point = new THREE.Vector3();
   var direction = new THREE.Vector3();
-  for ( var i = 0; i < 30; i ++ ) {
+  for ( var i = 0; i < 35; i ++ ) {
     direction.x += Math.random() * 2 -1;
     direction.y += Math.random() * 2 -1;
     direction.z += Math.random() * 2 -1;
