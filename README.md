@@ -2,4 +2,4 @@
 Drawing Lines in WebGL
 
 Demo:
-https://susanqu.github.io/CodeSketch-Lines/
+https://susanqu.github.io/codesketch-lines/
