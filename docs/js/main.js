@@ -80,8 +80,8 @@ function createParticle(){
 	//Create a geometry used for the particles which contains nothing for now
 	var geometry = new THREE.Geometry();
 	var vertices = new THREE.Vector3(
-		5,
 		1,
+		10,
 		10
 	);
 	//apply our vector inside the geometry
@@ -94,6 +94,7 @@ function createParticle(){
 		transparent : true,
 		sizeAttenuation : false
   });
+
   //Point cloud is a specific Mesh for particles
 	particle = new THREE.Points(geometry, material);
 
@@ -103,7 +104,7 @@ function createParticle(){
 	//We set a random position for each particle
 	particle.direction = {
 		x : (Math.random() - 0.5)*100*2,
-		y : (Math.random() - 0.5)*100*2
+    y : -5
 	};
 
 	particles.add(particle);
@@ -178,12 +179,14 @@ function render(){
 		var particle = particles.children[i];
 
 		//We move our particle closer to its destination
-		particle.geometry.vertices[0].x += (particle.direction.x - particle.geometry.vertices[0].x)*particle.speed;
-		particle.geometry.vertices[0].y += (particle.direction.y - particle.geometry.vertices[0].y)*particle.speed;
-		particle.geometry.vertices[0].z += (particle.direction.y - particle.geometry.vertices[0].z)*particle.speed;
-		//We reduce the opacity of the particle
+		particle.geometry.vertices[0].x += (particle.direction.x - particle.geometry.vertices[0].x) * particle.speed;
+		particle.geometry.vertices[0].y += (particle.direction.y - particle.geometry.vertices[0].x) * particle.speed;
+		particle.geometry.vertices[0].z += (particle.direction.y - particle.geometry.vertices[0].z) * particle.speed;
+
+    //We reduce the opacity of the particle
 		particle.material.opacity -= 0.005;
-		//Prevents ThreeJs the particle has moved
+
+    //Prevents ThreeJs the particle has moved
 		particle.geometry.verticesNeedUpdate = true;
 
 		//If the opacity of the particle is too low
