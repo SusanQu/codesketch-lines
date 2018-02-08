@@ -71,24 +71,41 @@ function makeLine (geo, color, width, opacity){
 
 function createParticle(){
 
-	//Create a geometry used for the particles which contains nothing for now
-	var geometry = new THREE.Geometry();
-	var vertices0 = new THREE.Vector3(0,
-                                    (Math.random()-0.5)*100,
-                                    (20-Math.random()*40))
-	var vertices1 = new THREE.Vector3(vertices0.x+6, vertices0.y, vertices0.z);
-	// var vertices3 = new THREE.Vector3(12,17,15);
-	//apply our vector inside the geometry
-	geometry.vertices.push(vertices0, vertices1);
+	// //Create a geometry used for the particles which contains nothing for now
+	// var geometry = new THREE.Geometry();
+	// var vertices0 = new THREE.Vector3(0,
+  //                                   (Math.random()-0.5)*100,
+  //                                   (20-Math.random()*40))
+	// var vertices1 = new THREE.Vector3(vertices0.x+6, vertices0.y, vertices0.z);
+	// // var vertices3 = new THREE.Vector3(12,17,15);
+	// //apply our vector inside the geometry
+	// geometry.vertices.push(vertices0, vertices1);
+  //
+  // var material = new THREE.LineBasicMaterial({
+  // 	color: 0x0000ff,
+  //   linewidth: 10
+  // });
 
-  var material = new THREE.LineBasicMaterial({
-  	color: 0x0000ff
+  var geometry = new THREE.BoxGeometry(6,0.1+Math.random(),0.1+Math.random());
+  var material = new THREE.MeshBasicMaterial({
+  	color: colors[2],
+    wireframe:true
   });
+
+
+
+
+
 
   //Point cloud is a specific Mesh for particles
 	//particle = new THREE.Points(geometry, materialPoints);
 	//particle = new THREE.Points(geometry, materialPoints);
-  particle = new THREE.Line(geometry, material);
+  particle = new THREE.Mesh(geometry, material);
+  particle.position.x = 0;
+  particle.position.y = (Math.random()-0.5)*100;
+  particle.position.z = 20-Math.random()*40;
+
+
 
 	//create a random speed for each particle for aesthetics
 	particle.speed = 0.02+ (Math.random()-0.5)/1000;
@@ -140,14 +157,10 @@ function render(){
 		var particle = particles.children[i];
 
 		//We move our particle closer to its destination
-		particle.geometry.vertices[0].x += particle.direction.x * particle.speed;
-		particle.geometry.vertices[0].y += particle.direction.y  * particle.speed;
-		particle.geometry.vertices[0].z += particle.direction.z * particle.speed;
+		particle.position.x += particle.direction.x * particle.speed;
+		particle.position.y += particle.direction.y  * particle.speed;
+		particle.position.z += particle.direction.z * particle.speed;
 
-    //We move our particle closer to its destination
-    particle.geometry.vertices[1].x += particle.direction.x * particle.speed;
-    particle.geometry.vertices[1].y += particle.direction.y * particle.speed;
-    particle.geometry.vertices[1].z += particle.direction.z * particle.speed;
 
     //We reduce the opacity of the particle
 		particle.material.opacity -= 0.005;
