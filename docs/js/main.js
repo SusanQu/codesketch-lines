@@ -1,11 +1,10 @@
 (function() {
 
 var scene, camera, renderer, controls, aspect, clock;
-var graph, material, mesh, line, particle;
+var graph, material, mesh, line, particles, particle, randomLine;
 
 var colors = [0x50514f, 0xf0b67f, 0xf25f5c, 0x70c1b3];
 var frustumSize = 500;
-
 
 
 init();
@@ -30,30 +29,15 @@ function init() {
     graph = new THREE.Object3D();
     scene.add(graph);
 
-    // createLines();
 
-    for(var i=0; i<150; i++){
-      createRandomLines();
-    }
 
-    //particle
-    // var geometry = new THREE.Geometry();
-    //
-    // for ( var i = 0; i < 10; i ++ ) {
-    //
-    //     particle = new THREE.Mesh( new THREE.SphereGeometry(20), new THREE.MeshNormalMaterial() )
-    //     particle.position.x = Math.random() * 2 - 1;
-    //     particle.position.y = Math.random() * 2 - 1;
-    //     particle.position.z = Math.random() * 2 - 1;
-    //     particle.position.normalize();
-    //     particle.position.multiplyScalar( Math.random() * 10 + 450 );
-    //     //particle.scale.x = particle.scale.y = 10;
-    //     scene.add( particle );
-    //
-    //     geometry.vertices.push( particle.position );
-    //
-    // }
+  //for(var i=0; i<particleCount; i++){
+    createRandomLines();
+  //  }
 
+    //particles will be the 3D object containing all the particles
+    particles = new THREE.Object3D();
+    scene.add(particles);
 
 
     // Grid
@@ -69,9 +53,9 @@ function init() {
     document.body.appendChild( renderer.domElement );
     window.addEventListener( 'resize', onWindowResize, false );
 
-
-
 }
+
+
 
 function makeLine (geo, color, width, opacity){
 
@@ -86,43 +70,48 @@ function makeLine (geo, color, width, opacity){
     });
 
     mesh = new THREE.Mesh( line.geometry, material );
+
     graph.add( mesh );
 }
 
+
+function createParticle(){
+
+	//Create a geometry used for the particles which contains nothing for now
+	var geometry = new THREE.Geometry();
+	var vertices = new THREE.Vector3(
+		5,
+		1,
+		10
+	);
+	//apply our vector inside the geometry
+	geometry.vertices.push(vertices);
+	//We create a white material
+	//sizeAttenuation defines if the particle will be small if far from the camera
+	var material = new THREE.PointsMaterial({
+		color : colors[2],
+		size : 20,
+		transparent : true,
+		sizeAttenuation : false
+  });
+  //Point cloud is a specific Mesh for particles
+	particle = new THREE.Points(geometry, material);
+
+	//create a random speed for each particle for aesthetics
+	particle.speed = Math.random()/100+0.002;
+
+	//We set a random position for each particle
+	particle.direction = {
+		x : (Math.random() - 0.5)*100*2,
+		y : (Math.random() - 0.5)*100*2
+	};
+
+	particles.add(particle);
+}
+
 function createLines(){
-    // var line = new Float32Array( 600 );
-    // for( var j = 0; j < 200 * 3; j += 3 ) {
-    //   line[ j ] = -30 + 0.1 * j;
-    //   line[ j + 1 ] = 5 * Math.sin( 0.01 *  j );
-    //   line[ j + 2 ] = -40;
-    // }
-    // makeLine( line, 0, 0.05, 0.5 );
-    //
-    // var line = new Float32Array( 600 );
-    // for( var j = 0; j < 200 * 3; j += 3 ) {
-    //   line[ j ] = -30 + 0.1 * j;
-    //   //line[ j + 1 ] = 5 * Math.sin( 0.01 *  j );
-    //   line[ j + 2 ] = -20;
-    // }
-    // makeLine( line, 1);
-    //
-    // var line = new Float32Array( 600 );
-    // for( var j = 0; j < 200 * 3; j += 3 ) {
-    //   line[ j ] = -30 + 0.1 * j;
-    //   //line[ j + 1 ] = 5 * Math.sin( 0.01 *  j );
-    //   line[ j + 2 ] = -60;
-    // }
-    // makeLine( line, 2);
-    //
-    //
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( -30, -30, -30 ) );
-  	// line.vertices.push( new THREE.Vector3( -30, 30, -30 ) );
-    // makeLine( line, 0);
 
-
-
-    for (var i = 0; i<20; i++){
+    for (var i = 0; i<5; i++){
       var lineHeight = i;
       var lineOpacity = i * 0.1 / 2;
       var line = new THREE.Geometry();
@@ -130,75 +119,20 @@ function createLines(){
       line.vertices.push( new THREE.Vector3( -5, lineHeight, 0 ) );
       makeLine( line, 0, 0.05, lineOpacity);
     }
-
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 20, 0, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
-    // makeLine( line, 3);
-    //
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 20, 10, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 0, 10, 0 ) );
-    // makeLine( line, 3);
-
-    // Three.Vector(x, y, z)
-    //left back
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 0, 20, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
-    // makeLine( line, 3);
-    //
-    // //right back
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 20, 0, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 20, 20, 0 ) );
-    // makeLine( line, 3);
-    //
-    // //back top
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 0, 20, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 20, 20, 0 ) );
-    // makeLine( line, 3);
-
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 20, 0, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
-    // makeLine( line, 3);
-
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 0, 0, 20 ) );
-    // line.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
-    // makeLine( line, 3);
-    //
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 0, 0, 20 ) );
-    // line.vertices.push( new THREE.Vector3( 0, -20, 20 ) );
-    // makeLine( line, 3);
-    //
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 20, 0, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 20, 0, 20 ) );
-    // makeLine( line, 3);
-    //
-    // //right front leg
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 20, 0, 20 ) );
-    // //right front bottom
-    // line.vertices.push( new THREE.Vector3( 20, -20, 20 ) );
-    // makeLine( line, 3);
 }
+
 
 function createRandomLines(){
   //random line
-  var randomLine = new THREE.Geometry();
+  randomLine = new THREE.Geometry();
 
   var point = new THREE.Vector3();
   var direction = new THREE.Vector3();
   for ( var i = 0; i < 2; i ++ ) {
-    direction.x += Math.random() * 2 -1;
-    direction.y += Math.random() * 2 -1;
-    direction.z += Math.random() * 2 -1;
-    direction.normalize().multiplyScalar( 10 );
+    direction.x = (Math.random() * 800) - 400;
+    direction.y = (Math.random() * 800) - 400;
+    direction.z = (Math.random() * 800) - 400;
+    direction.normalize().multiplyScalar( 20 );
     point.add( direction );
     randomLine.vertices.push( point.clone() );
   }
@@ -208,6 +142,8 @@ function createRandomLines(){
 
   makeLine(randomLine, 0, lineWidth, opacity);
 }
+
+
 
 function onWindowResize() {
   var aspect = window.innerWidth / window.innerHeight;
@@ -229,10 +165,36 @@ function animate() {
 
     controls.update();
 
-    graph.rotation.y += 0.1 * clock.getDelta();
+    render();
 
-    renderer.render( scene, camera );
+}
 
+function render(){
+  graph.rotation.y += 0.35 * clock.getDelta();
+  renderer.render( scene, camera );
+  createParticle();
+  for(var i=0, j=particles.children.length; i<j; i++){
+		//Get the next particle
+		var particle = particles.children[i];
+
+		//We move our particle closer to its destination
+		particle.geometry.vertices[0].x += (particle.direction.x - particle.geometry.vertices[0].x)*particle.speed;
+		particle.geometry.vertices[0].y += (particle.direction.y - particle.geometry.vertices[0].y)*particle.speed;
+		particle.geometry.vertices[0].z += (particle.direction.y - particle.geometry.vertices[0].z)*particle.speed;
+		//We reduce the opacity of the particle
+		particle.material.opacity -= 0.005;
+		//Prevents ThreeJs the particle has moved
+		particle.geometry.verticesNeedUpdate = true;
+
+		//If the opacity of the particle is too low
+		if(particle.material.opacity < 0.05){
+			//We remove our particle from the scene
+			particles.remove(particle);
+			//The loop must go through the same 'i' because we removed one particle from the array
+			i--;
+      j--;
+		}
+	}
 }
 
 })();
