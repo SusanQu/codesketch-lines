@@ -16,8 +16,8 @@ function init() {
     scene.background = new THREE.Color( 0xf0f0f0 );
 
     aspect = window.innerWidth / window.innerHeight;
-    //camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
-    camera = new THREE.OrthographicCamera( frustumSize * aspect / - 20, frustumSize * aspect / 20, frustumSize / 20, frustumSize / - 20, 1, 10000 );
+    camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
+    //camera = new THREE.OrthographicCamera( frustumSize * aspect / - 20, frustumSize * aspect / 20, frustumSize / 20, frustumSize / - 20, 1, 10000 );
     //camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 1, 100 );
     //camera.position.z = 100;
     camera.position.set( 50, 50, 0 );
@@ -29,11 +29,6 @@ function init() {
     graph = new THREE.Object3D();
     scene.add(graph);
 
-
-
-  //for(var i=0; i<particleCount; i++){
-    createRandomLines();
-  //  }
 
     //particles will be the 3D object containing all the particles
     particles = new THREE.Object3D();
@@ -54,7 +49,6 @@ function init() {
     window.addEventListener( 'resize', onWindowResize, false );
 
 }
-
 
 
 function makeLine (geo, color, width, opacity){
@@ -79,69 +73,34 @@ function createParticle(){
 
 	//Create a geometry used for the particles which contains nothing for now
 	var geometry = new THREE.Geometry();
-	var vertices = new THREE.Vector3(
-		1,
-		10,
-		10
-	);
+	var vertices0 = new THREE.Vector3(0,
+                                    (Math.random()-0.5)*100,
+                                    (20-Math.random()*40))
+	var vertices1 = new THREE.Vector3(vertices0.x+6, vertices0.y, vertices0.z);
+	// var vertices3 = new THREE.Vector3(12,17,15);
 	//apply our vector inside the geometry
-	geometry.vertices.push(vertices);
-	//We create a white material
-	//sizeAttenuation defines if the particle will be small if far from the camera
-	var material = new THREE.PointsMaterial({
-		color : colors[2],
-		size : 20,
-		transparent : true,
-		sizeAttenuation : false
+	geometry.vertices.push(vertices0, vertices1);
+
+  var material = new THREE.LineBasicMaterial({
+  	color: 0x0000ff
   });
 
   //Point cloud is a specific Mesh for particles
-	particle = new THREE.Points(geometry, material);
+	//particle = new THREE.Points(geometry, materialPoints);
+	//particle = new THREE.Points(geometry, materialPoints);
+  particle = new THREE.Line(geometry, material);
 
 	//create a random speed for each particle for aesthetics
-	particle.speed = Math.random()/100+0.002;
+	particle.speed = 0.02+ (Math.random()-0.5)/1000;
 
 	//We set a random position for each particle
 	particle.direction = {
-		x : (Math.random() - 0.5)*100*2,
-    y : -5
+		x : 10,
+    y : 0,
+    z : 0
 	};
 
 	particles.add(particle);
-}
-
-function createLines(){
-
-    for (var i = 0; i<5; i++){
-      var lineHeight = i;
-      var lineOpacity = i * 0.1 / 2;
-      var line = new THREE.Geometry();
-      line.vertices.push( new THREE.Vector3( 5, lineHeight, 0 ) );
-      line.vertices.push( new THREE.Vector3( -5, lineHeight, 0 ) );
-      makeLine( line, 0, 0.05, lineOpacity);
-    }
-}
-
-
-function createRandomLines(){
-  //random line
-  randomLine = new THREE.Geometry();
-
-  var point = new THREE.Vector3();
-  var direction = new THREE.Vector3();
-  for ( var i = 0; i < 2; i ++ ) {
-    direction.x = (Math.random() * 800) - 400;
-    direction.y = (Math.random() * 800) - 400;
-    direction.z = (Math.random() * 800) - 400;
-    direction.normalize().multiplyScalar( 20 );
-    point.add( direction );
-    randomLine.vertices.push( point.clone() );
-  }
-
-  var opacity = Math.random();
-  var lineWidth = Math.random() * 0.01;
-
-  makeLine(randomLine, 0, lineWidth, opacity);
 }
 
 
@@ -171,17 +130,24 @@ function animate() {
 }
 
 function render(){
-  graph.rotation.y += 0.35 * clock.getDelta();
+  //graph.rotation.y += 0.35 * clock.getDelta();
   renderer.render( scene, camera );
+
   createParticle();
+
   for(var i=0, j=particles.children.length; i<j; i++){
 		//Get the next particle
 		var particle = particles.children[i];
 
 		//We move our particle closer to its destination
-		particle.geometry.vertices[0].x += (particle.direction.x - particle.geometry.vertices[0].x) * particle.speed;
-		particle.geometry.vertices[0].y += (particle.direction.y - particle.geometry.vertices[0].x) * particle.speed;
-		particle.geometry.vertices[0].z += (particle.direction.y - particle.geometry.vertices[0].z) * particle.speed;
+		particle.geometry.vertices[0].x += particle.direction.x * particle.speed;
+		particle.geometry.vertices[0].y += particle.direction.y  * particle.speed;
+		particle.geometry.vertices[0].z += particle.direction.z * particle.speed;
+
+    //We move our particle closer to its destination
+    particle.geometry.vertices[1].x += particle.direction.x * particle.speed;
+    particle.geometry.vertices[1].y += particle.direction.y * particle.speed;
+    particle.geometry.vertices[1].z += particle.direction.z * particle.speed;
 
     //We reduce the opacity of the particle
 		particle.material.opacity -= 0.005;
