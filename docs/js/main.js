@@ -81,14 +81,17 @@ function createParticle(){
 	//apply our vector inside the geometry
 	geometry.vertices.push(vertices0, vertices1);
 
-  var material = new THREE.LineBasicMaterial({
-  	color: 0x0000ff
+  particle = new MeshLine();
+  particle.setGeometry( geometry );
+
+  material = new MeshLineMaterial({
+    color: new THREE.Color( colors[ 1 ] ),
+    lineWidth: 0.5,
+    opacity: 1,
+    transparent: true
   });
 
-  //Point cloud is a specific Mesh for particles
-	//particle = new THREE.Points(geometry, materialPoints);
-	//particle = new THREE.Points(geometry, materialPoints);
-  particle = new THREE.Line(geometry, material);
+  particle = new THREE.Mesh(particle.geometry, material);
 
 	//create a random speed for each particle for aesthetics
 	particle.speed = 0.02+ (Math.random()-0.5)/1000;
@@ -140,14 +143,14 @@ function render(){
 		var particle = particles.children[i];
 
 		//We move our particle closer to its destination
-		particle.geometry.vertices[0].x += particle.direction.x * particle.speed;
-		particle.geometry.vertices[0].y += particle.direction.y  * particle.speed;
-		particle.geometry.vertices[0].z += particle.direction.z * particle.speed;
+		particle.position.x += particle.direction.x * particle.speed;
+		particle.position.y += particle.direction.y  * particle.speed;
+		particle.position.z += particle.direction.z * particle.speed;
 
     //We move our particle closer to its destination
-    particle.geometry.vertices[1].x += particle.direction.x * particle.speed;
-    particle.geometry.vertices[1].y += particle.direction.y * particle.speed;
-    particle.geometry.vertices[1].z += particle.direction.z * particle.speed;
+    // particle.geometry.vertices[1].x += particle.direction.x * particle.speed;
+    // particle.geometry.vertices[1].y += particle.direction.y * particle.speed;
+    // particle.geometry.vertices[1].z += particle.direction.z * particle.speed;
 
     //We reduce the opacity of the particle
 		particle.material.opacity -= 0.005;
