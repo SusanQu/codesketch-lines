@@ -17,11 +17,12 @@ function init() {
     scene.background = new THREE.Color( 0xf0f0f0 );
 
     aspect = window.innerWidth / window.innerHeight;
-    //camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
-    camera = new THREE.OrthographicCamera( frustumSize * aspect / - 20, frustumSize * aspect / 20, frustumSize / 20, frustumSize / - 20, 1, 10000 );
+    camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
+    //camera = new THREE.OrthographicCamera( frustumSize * aspect / - 20, frustumSize * aspect / 20, frustumSize / 20, frustumSize / - 20, 1, 10000 );
     //camera = new THREE.OrthographicCamera( -1, 1, 1, -1, 1, 100 );
     //camera.position.z = 100;
     camera.position.set( 50, 50, 0 );
+
 
     // var cameraOrthoHelper = new THREE.CameraHelper( camera );
 		// scene.add( cameraOrthoHelper );
@@ -32,28 +33,13 @@ function init() {
 
     // createLines();
 
-    for(var i=0; i<150; i++){
-      createRandomLines();
-    }
-
-    //particle
-    // var geometry = new THREE.Geometry();
-    //
-    // for ( var i = 0; i < 10; i ++ ) {
-    //
-    //     particle = new THREE.Mesh( new THREE.SphereGeometry(20), new THREE.MeshNormalMaterial() )
-    //     particle.position.x = Math.random() * 2 - 1;
-    //     particle.position.y = Math.random() * 2 - 1;
-    //     particle.position.z = Math.random() * 2 - 1;
-    //     particle.position.normalize();
-    //     particle.position.multiplyScalar( Math.random() * 10 + 450 );
-    //     //particle.scale.x = particle.scale.y = 10;
-    //     scene.add( particle );
-    //
-    //     geometry.vertices.push( particle.position );
-    //
+    // for(var i=0; i<150; i++){
+    //   createRandomLines();
     // }
 
+    makeKnot(3);
+
+    document.addEventListener("keydown", onDocumentKeyDown, false);
 
 
     // Grid
@@ -69,9 +55,27 @@ function init() {
     document.body.appendChild( renderer.domElement );
     window.addEventListener( 'resize', onWindowResize, false );
 
-
-
 }
+
+function onDocumentKeyDown(event) {
+    var keyCode = event.which;
+    if (keyCode == 37) {
+      console.log('left');
+    } else if (keyCode == 39) {
+      console.log('right');
+    } 
+};
+
+
+function makeKnot(tubeX){
+  geometry = new THREE.TorusKnotGeometry(160, 44, tubeX, 15, 2, 3, 1);
+  material = new THREE.MeshNormalMaterial({shading: THREE.FlatShading, transparent: true, opacity: 1});
+  mesh = new THREE.Mesh(geometry, material);
+  mesh.scale.x = mesh.scale.y = mesh.scale.z = 0.1;
+  graph.add(mesh);
+}
+
+
 
 function makeLine (geo, color, width, opacity){
 
@@ -90,37 +94,6 @@ function makeLine (geo, color, width, opacity){
 }
 
 function createLines(){
-    // var line = new Float32Array( 600 );
-    // for( var j = 0; j < 200 * 3; j += 3 ) {
-    //   line[ j ] = -30 + 0.1 * j;
-    //   line[ j + 1 ] = 5 * Math.sin( 0.01 *  j );
-    //   line[ j + 2 ] = -40;
-    // }
-    // makeLine( line, 0, 0.05, 0.5 );
-    //
-    // var line = new Float32Array( 600 );
-    // for( var j = 0; j < 200 * 3; j += 3 ) {
-    //   line[ j ] = -30 + 0.1 * j;
-    //   //line[ j + 1 ] = 5 * Math.sin( 0.01 *  j );
-    //   line[ j + 2 ] = -20;
-    // }
-    // makeLine( line, 1);
-    //
-    // var line = new Float32Array( 600 );
-    // for( var j = 0; j < 200 * 3; j += 3 ) {
-    //   line[ j ] = -30 + 0.1 * j;
-    //   //line[ j + 1 ] = 5 * Math.sin( 0.01 *  j );
-    //   line[ j + 2 ] = -60;
-    // }
-    // makeLine( line, 2);
-    //
-    //
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( -30, -30, -30 ) );
-  	// line.vertices.push( new THREE.Vector3( -30, 30, -30 ) );
-    // makeLine( line, 0);
-
-
 
     for (var i = 0; i<20; i++){
       var lineHeight = i;
@@ -131,61 +104,6 @@ function createLines(){
       makeLine( line, 0, 0.05, lineOpacity);
     }
 
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 20, 0, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
-    // makeLine( line, 3);
-    //
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 20, 10, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 0, 10, 0 ) );
-    // makeLine( line, 3);
-
-    // Three.Vector(x, y, z)
-    //left back
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 0, 20, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
-    // makeLine( line, 3);
-    //
-    // //right back
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 20, 0, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 20, 20, 0 ) );
-    // makeLine( line, 3);
-    //
-    // //back top
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 0, 20, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 20, 20, 0 ) );
-    // makeLine( line, 3);
-
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 20, 0, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
-    // makeLine( line, 3);
-
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 0, 0, 20 ) );
-    // line.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
-    // makeLine( line, 3);
-    //
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 0, 0, 20 ) );
-    // line.vertices.push( new THREE.Vector3( 0, -20, 20 ) );
-    // makeLine( line, 3);
-    //
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 20, 0, 0 ) );
-    // line.vertices.push( new THREE.Vector3( 20, 0, 20 ) );
-    // makeLine( line, 3);
-    //
-    // //right front leg
-    // var line = new THREE.Geometry();
-    // line.vertices.push( new THREE.Vector3( 20, 0, 20 ) );
-    // //right front bottom
-    // line.vertices.push( new THREE.Vector3( 20, -20, 20 ) );
-    // makeLine( line, 3);
 }
 
 function createRandomLines(){
@@ -224,6 +142,8 @@ function onWindowResize() {
 
 
 function animate() {
+
+
 
     requestAnimationFrame( animate );
 
