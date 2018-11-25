@@ -33,7 +33,28 @@ function init() {
     loader.load(
       '../resources/bunny.obj',
       function(obj){
-        graph.add(obj);
+
+        obj.traverse(function(child){
+          if (child instanceof THREE.Mesh){
+              var geometry = child.geometry;
+              material = child.material;
+              obj = new THREE.Mesh(geometry, material);
+              graph.add(obj);
+          }
+
+          var useWireFrame = true;
+            if(useWireFrame){
+              obj.traverse(function(child){
+                  if (child instanceof THREE.Mesh){
+                    child.material.wireframe = true;
+                    child.material.color = new THREE.Color( 0x6893DE  );
+                  }
+              });
+            }
+
+        });
+
+
       }
     );
 
