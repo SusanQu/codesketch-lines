@@ -6,8 +6,10 @@ var scene, camera, renderer, controls, clock;
 var keyLight, fillLight, backLight;
 var material, mesh, line, loader, wireframe;
 
-//dark gray, light gray
-var colors = [0xf7adad];
+//light peach
+//var colors = [0xfcb79a];
+var colors = [0xffc7b0];
+
 var frustumSize = 500;
 var aspect = window.innerWidth / window.innerHeight;
 
@@ -21,7 +23,8 @@ function init() {
     scene.background = new THREE.Color( colors[0] );
 
     camera = new THREE.OrthographicCamera( frustumSize * aspect / - 20, frustumSize * aspect / 20, frustumSize / 20, frustumSize / - 20, 1, 10000 );
-    camera.position.set( 50, 50, 0 );
+    //camera.position.set( 50, 50, 0 );
+    camera.position.set( 5, 5, 10 );
 
 
     graph = new THREE.Object3D();
@@ -47,13 +50,19 @@ function init() {
               obj.traverse(function(child){
                   if (child instanceof THREE.Mesh){
                     child.material.wireframe = true;
-                    child.material.color = new THREE.Color( 0x6893DE  );
+                    child.material.wireframeLineWidth = 10;
+                    //child.material.color = new THREE.Color( 0xc08f35 );
+                    child.material.color = new THREE.Color( 0xd4844c );
+                    child.material.emissive = new THREE.Color( 0x783a3a );
                   }
               });
             }
-
         });
 
+        //obj.position.y = 5;
+        //obj.position.x = 5;
+        obj.position.y = 0;
+        obj.position.z = -15;
 
       }
     );
@@ -74,18 +83,35 @@ function init() {
 }
 
 function makeLights(){
-    keyLight = new THREE.DirectionalLight(new THREE.Color('hsl(30, 100%, 75%)'), 1.0);
-    keyLight.position.set(-100, 0, 100);
+    // keyLight = new THREE.DirectionalLight(new THREE.Color('hsl(30, 100%, 75%)'), 1.0);
+    // keyLight.position.set(-100, 0, 100);
+    //
+    // fillLight = new THREE.DirectionalLight(new THREE.Color('hsl(240, 100%, 75%)'), 0.75);
+    // fillLight.position.set(100, 0, 100);
+    //
+    // backLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    // backLight.position.set(100, 0, -100).normalize();
+    //
+    // scene.add(keyLight);
+    // scene.add(fillLight);
+    // scene.add(backLight);
 
-    fillLight = new THREE.DirectionalLight(new THREE.Color('hsl(240, 100%, 75%)'), 0.75);
-    fillLight.position.set(100, 0, 100);
+    var ambientLight = new THREE.AmbientLight( 0x000000 );
+    scene.add( ambientLight );
 
-    backLight = new THREE.DirectionalLight(0xffffff, 1.0);
-    backLight.position.set(100, 0, -100).normalize();
+    var lights = [];
+    lights[ 0 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+    lights[ 1 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+    lights[ 2 ] = new THREE.PointLight( 0xffffff, 1, 0 );
 
-    scene.add(keyLight);
-    scene.add(fillLight);
-    scene.add(backLight);
+    lights[ 0 ].position.set( 0, 200, 0 );
+    lights[ 1 ].position.set( 100, 200, 100 );
+    lights[ 2 ].position.set( - 100, - 200, - 100 );
+
+    scene.add( lights[ 0 ] );
+    scene.add( lights[ 1 ] );
+    scene.add( lights[ 2 ] );
+
 }
 
 
