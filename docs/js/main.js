@@ -73,7 +73,7 @@ function makeLine (geo, color, width, opacity){
 function createLines(){
     var lineWidth = 1;
 
-    for (var i = 0; i<40; i++){
+    for (var i = 0; i<25; i++){
       var lineHeight = i;
       var lineOpacity = i * 0.1 / 2;
       var lineColor = i;
@@ -85,7 +85,7 @@ function createLines(){
       //makeLine( line, lineColor , lineWidth, lineOpacity);
     }
 
-    for (var i = 0; i<40; i++){
+    for (var i = 0; i<25; i++){
       var lineHeight = i;
       var lineOpacity = i * 0.2 / 2;
       var lineColor = i;
