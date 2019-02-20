@@ -6,7 +6,7 @@ var graph, material, mesh, line;
 //dark gray, light gray
 //var colors = [0x50514f, 0xf0f0f0, 0xcca2d2];
 //rainbow color
-var colors = [0x8012ed, 0xbf01bf, 0xed1280, 0xff4040, 0xed7f12, 0xbfbf01, 0x80ed12, 0x40ff40, 0x12ed7f, 0x01bfbf, 0x1280ed, 0x4040ff, 0x1280ed, 0x01bfbf, 0x12ed7f, 0x40ff40, 0x80ed12, 0xbfbf01, 0xed7f12, 0xff4040 ];
+var colors = [0x8012ed, 0xbf01bf, 0xed1280, 0xff4040, 0xed7f12, 0xbfbf01, 0x80ed12, 0x40ff40, 0x12ed7f, 0x01bfbf, 0x1280ed, 0x4040ff, 0x1280ed, 0x01bfbf, 0x12ed7f, 0x40ff40, 0x80ed12, 0xbfbf01, 0xed7f12, 0xff4040, 0xed1280, 0xbf01bf, 0x8012ed, 0xbf01bf, 0xed1280, 0xff4040];
 //var colors = rainbowColor();
 var frustumSize = 500;
 var aspect = window.innerWidth / window.innerHeight;
@@ -59,7 +59,7 @@ function makeLine (geo, color, width, opacity){
 function createLines(){
     var lineWidth = 1;
 
-    for (var i = 0; i<30; i++){
+    for (var i = 0; i<40; i++){
       var lineHeight = i;
       var lineOpacity = i * 0.1 / 2;
       var lineColor = i;
@@ -70,7 +70,7 @@ function createLines(){
       makeLine( line, lineColor , lineWidth, 0.1);
     }
 
-    for (var i = 0; i<30; i++){
+    for (var i = 0; i<40; i++){
       var lineHeight = i;
       var lineOpacity = i * 0.1 / 2;
       var lineColor = i;
@@ -126,7 +126,7 @@ function animate() {
 
     requestAnimationFrame( animate );
     controls.update();
-    graph.rotation.x += 0.2 * clock.getDelta();
+    graph.rotation.x += 0.19 * clock.getDelta();
 
     renderer.render( scene, camera );
 
