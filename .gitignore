@@ -1,2 +1,5 @@
 node_modules
 bower_components
+docs/js/vendor/three.min.js
+id_rsa_public_github
+id_rsa_public_github.pub
